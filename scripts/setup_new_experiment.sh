@@ -15,12 +15,16 @@ function create_readme() {
   local readme_file="${NEW_EXPERIMENT_DIR}/README.md"
   
   echo "# ${NEW_EXPERIMENT_NAME}" > "${readme_file}"
-  echo "Created README.md file: ${readme_file}"
+  echo -e "\n## Setup\n" >> "${readme_file}"
+  echo -e "\n## Usage\n" >> "${readme_file}"
   
   read -p "Is this experiment paper based? (y/n): " is_paper_based
   if [[ "${is_paper_based}" == "y" ]]; then
     echo -e "## Citation\n\`\`\`bibtex\n\`\`\`" >> "${readme_file}"
   fi
+
+  echo -e "\n## References\n" >> "${readme_file}"
+  echo "Created README.md file: ${readme_file}"
 }
 
 # Main function
@@ -57,6 +61,8 @@ function main() {
   echo "To activate the virtual environment, run one of the following commands based on your shell:"
   echo ""
   echo "cd ${NEW_EXPERIMENT_DIR}"
+  echo "uv init"
+  echo "uv venv .venv"
   echo "source .venv/bin/activate.fish"
   echo "uv sync"
   echo ""
