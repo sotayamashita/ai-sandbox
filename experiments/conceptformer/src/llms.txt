@@ -1,0 +1,42 @@
+# LLMs and Knowledge Integration (based on ConceptFormer paper)
+
+## Current State of LLMs
+- Large Language Models (LLMs) have shown exceptional potential in various NLP tasks including conversational agents, summarization, and information retrieval
+- LLMs typically train on large-scale, general-purpose text corpora via self-supervision
+- Through pretraining, LLMs acquire substantial amounts of knowledge implicitly stored in model weights
+- However, this implicit storage leads to inefficient knowledge retrieval and risks of outdated, biased, or incomplete information
+- Even large models like ChatGPT struggle to accurately retrieve and articulate structured knowledge
+
+## LLM Knowledge Challenges
+- Simply improving or enlarging training corpora doesn't resolve deeper information retrieval challenges
+- Models frequently hallucinate or omit key facts, especially in specialized domains
+- Research shows growing parameter count improves factual recall, but issues persist
+- Inability to efficiently retrieve relevant concepts hampers downstream tasks like QA and search
+- Knowledge-intensive scenarios require structured, accurate, up-to-date information
+
+## Knowledge Graph Integration Approaches
+- Current approaches often modify internal architecture of pre-trained language models
+- Alternatively, they rely on "textification" of knowledge graph edges/nodes
+- Text-based methods consume large portions of context window and introduce noise
+- Architecture modification approaches (DKPLM, CoLAKE, KnowBert, K-Adapter) require partial fine-tuning
+
+## ConceptFormer Innovation
+- Injects concept vectors derived from knowledge graphs directly into LLM input embedding space
+- Preserves the LLM's original weights and architecture
+- Operates only at the input-embedding level, makes it compatible with most decoder-only LLMs
+- Achieves up to 348% improvement in factual recall on synthetic sentences with GPT-2 0.1B
+- Even a single concept vector increases factual recall by up to 213% on Wikipedia sentences
+- Uses 130x fewer tokens than traditional knowledge graph textification
+
+## Experimental Results
+- GPT-2 0.1B + ConceptFormer-15 achieves Hit@1 of 46.7% and Hit@10 of 72.5% (10x gain over baseline)
+- Larger models like LLaMA-2 (3B, 7B) outperform GPT-2 models even with more parameters
+- Architecture and training methodology significantly influence factual recall
+- ConceptFormer performs well across varying entity popularity levels, from niche to famous concepts
+
+## Implications for LLM Applications
+- Vector-based knowledge injection allows token-efficient knowledge augmentation
+- Preserves context window for user queries or additional information
+- Enables domain-specific knowledge integration without retraining entire models
+- Can transform smaller LLMs into basic QA engines for specialized domains
+- Bridges structured knowledge graphs with generative LLM capabilities
