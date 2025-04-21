@@ -6,6 +6,7 @@ A simple utility for performing OCR on PDF documents using Mistral's API.
 
 1. Create and activate virtual environment:
 ```bash
+uv venv .venv
 source .venv/bin/activate.fish
 ```
 
