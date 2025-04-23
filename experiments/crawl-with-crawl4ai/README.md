@@ -19,6 +19,19 @@ The script in this experiment:
 - Enables caching for better performance
 - Provides a summary of successful and failed pages
 
+## Setup
+
+1. Create and activate virtual environment:
+```bash
+uv venv .venv
+source .venv/bin/activate.fish
+```
+
+2. Install dependencies:
+```bash
+uv sync
+```
+
 ## Usage
 
 Run the script with:

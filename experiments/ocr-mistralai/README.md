@@ -1,4 +1,4 @@
-# Mistral OCR Utility
+# OCR Mistral
 
 A simple utility for performing OCR on PDF documents using Mistral's API.
 
