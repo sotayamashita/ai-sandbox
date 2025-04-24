@@ -37,7 +37,7 @@ uv sync
 Run the script with:
 
 ```bash
-uv run main.py
+uv run src/main.py
 ```
 
 The script will:

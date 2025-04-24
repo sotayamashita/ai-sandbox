@@ -30,7 +30,7 @@ You can find or create your API key at: https://console.mistral.ai/api-keys
 
 Process a PDF file:
 ```bash
-uv main.py path/to/your/document.pdf
+uv src/main.py path/to/your/document.pdf
 ```
 
 The tool will:

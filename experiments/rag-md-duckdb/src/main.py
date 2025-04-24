@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import uuid
 from typing import List
 from pathlib import Path
 from dataclasses import dataclass
@@ -138,7 +137,7 @@ def main() -> None:
             console.print(f"[green]Indexed {len(rows)} chunks.[/green]")
 
         # Search
-        def oneshot_search(query: str) -> None:
+        def search(query: str) -> None:
             console.print("[cyan]Searching…[/cyan]")
             query_vector = embedding_model.embed_query(query)
             query_vector_np = np.array(query_vector, dtype=np.float32)
@@ -156,7 +155,7 @@ def main() -> None:
                 console.print("[yellow]No matches found.[/yellow]")
             else:
                 for rank, (row_id, text, sim) in enumerate(results, start=1):
-                    snippet = text.replace("\n", " ")[:300] + ("…" if len(text) > 120 else "")
+                    snippet = text.replace("\n", " ")[:300] + ("…" if len(text) > 300 else "")
                     console.print(f"[bold]{rank}. (ID {row_id})[/bold] sim={sim:.4f}\n   {snippet}")
 
         # REPL mode 
@@ -167,7 +166,8 @@ def main() -> None:
                 break
             if not query:
                 break
-            oneshot_search(query)
+
+            search(query)
 
     finally:
         if db_con:

@@ -13,7 +13,21 @@ A simple Retrieval-Augmented Generation (RAG) system that processes markdown doc
 - 🔄 **Interactive REPL** - Simple command-line interface for querying the knowledge base
 - 🧩 **Chunk Management** - Intelligently splits documents into overlapping chunks for better context
 
-## Setup & Local Development
+## Setup
+
+### Prepare markdown
+
+1. Create an input directory:
+```bash
+mkdir -p input
+```
+
+2. Add your markdown files to this directory. You can:
+   - Manually copy existing markdown files
+   - Generate markdown from websites using tools like `experiments/crawl-with-crawl4ai`
+   - Create new markdown documents with your content
+
+3. Ensure your markdown files follow standard markdown syntax for optimal processing.
 
 ### Using Local Python Environment
 
