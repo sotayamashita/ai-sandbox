@@ -24,7 +24,7 @@ mkdir -p input
 
 2. Add your markdown files to this directory. You can:
    - Manually copy existing markdown files
-   - Generate markdown from websites using tools like `experiments/crawl-with-crawl4ai`
+   - Generate markdown from websites using tools [`experiments/crawl-with-crawl4ai`](../crawl-with-crawl4ai)
    - Create new markdown documents with your content
 
 3. Ensure your markdown files follow standard markdown syntax for optimal processing.
