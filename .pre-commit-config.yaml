@@ -1,0 +1,34 @@
+repos:
+  # Basic checks first
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        exclude: .lock
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Clean imports first
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+        args: ["--in-place", "--recursive", "--remove-all-unused-imports", "--remove-unused-variables", "--ignore-init-module-imports"]
+
+  # Sort imports before formatting
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+        args: [ "--profile", "black" ]
+
+  # Format code last
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black

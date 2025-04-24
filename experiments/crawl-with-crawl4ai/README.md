@@ -5,7 +5,7 @@ This experiment demonstrates how to use the `crawl4ai` library to crawl a websit
 ## Overview
 
 The script in this experiment:
-1. Crawls the [crawl4ai documentation](https://docs.crawl4ai.com/) 
+1. Crawls the [crawl4ai documentation](https://docs.crawl4ai.com/)
 2. Extracts content from each page
 3. Saves the content as markdown files
 

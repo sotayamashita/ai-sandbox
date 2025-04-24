@@ -36,7 +36,7 @@ uv src/main.py path/to/your/document.pdf
 The tool will:
 - Extract text from the PDF using Mistral's OCR service
 - Save the content as Markdown in `data/YYYY-MM-DD/document.md`
-- Extract and save all images to `data/YYYY-MM-DD/images/` 
+- Extract and save all images to `data/YYYY-MM-DD/images/`
 
 ## References
 

@@ -4,14 +4,15 @@ from __future__ import annotations
 
 import base64
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import List
-from datetime import datetime
 
 import fire
 from dotenv import load_dotenv
 from mistralai import Mistral
 from mistralai.models import OCRImageObject, OCRPageObject, OCRResponse
+
 
 # --------------------------------------------------------------------------- #
 # Utility helpers
@@ -120,6 +121,7 @@ def main(file_path: str) -> None:
 
     print(f"OCR complete → {md_file}")
     print(f"Usage info: {ocr.usage_info}")
+
 
 if __name__ == "__main__":
     fire.Fire(main)

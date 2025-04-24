@@ -66,22 +66,22 @@ docker compose up --build
   - Features: Supports various Markdown formats while preserving metadata
 
 #### 2. Text Chunking
-- 🧩 **LangChain - RecursiveCharacterTextSplitter** 
+- 🧩 **LangChain - RecursiveCharacterTextSplitter**
   - Function: Splits long texts into chunks with overlap
   - Features: Maintains context through adjustable chunk size and overlap settings
   - Alternative: [`spaCy`](https://spacy.io/)
 
 #### 3. Embedding Generation
-- 🧠 **HuggingFace Embeddings** 
+- 🧠 **HuggingFace Embeddings**
   - Model: [`intfloat/multilingual-e5-large-instruct`](https://huggingface.co/intfloat/multilingual-e5-large-instruct)
   - Function: Generates high-quality 1024-dimensional embeddings with multilingual support
   - Benchmark: [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)
-- 🚀 **PyTorch** 
+- 🚀 **PyTorch**
   - Function: Provides hardware acceleration (GPU/MPS) for embedding model operations
   - Features: Automatically leverages Apple Silicon MPS acceleration when available
 
 #### 4. Vector Storage & Retrieval
-- 📊 **DuckDB with VSS Extension** 
+- 📊 **DuckDB with VSS Extension**
   - Function: Lightweight, zero-configuration analytical database for vector storage and search
   - Features:
     - `hnsw` indexing: Fast approximate nearest neighbor search for embeddings
@@ -89,12 +89,12 @@ docker compose up --build
   - Alternative: [Chroma](https://github.com/chroma-core/chroma), [Weaviate](https://github.com/weaviate/weaviate)
 
 #### 5. System Integration & User Interface
-- 🔄 **LangChain** 
+- 🔄 **LangChain**
   - Function: Orchestrates the entire RAG pipeline components
-- 📈 **tqdm** 
+- 📈 **tqdm**
   - Function: Shows progress bars for long-running operations like file processing and embedding generation
   - Features: Improves user experience during indexing and database operations
-- 🎨 **Rich** 
+- 🎨 **Rich**
   - Function: Enhances terminal output with colors and formatting
   - Features: Makes logs and search results more readable and user-friendly
 
