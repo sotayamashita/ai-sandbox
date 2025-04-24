@@ -1,0 +1,16 @@
+[project]
+name = "rag-md-duckdb"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.2.2",
+    "langchain>=0.3.24",
+    "langchain-community>=0.3.22",
+    "numpy>=2.2.5",
+    "rich>=14.0.0",
+    "sentence-transformers>=4.1.0",
+    "torch>=2.7.0",
+    "unstructured[md]>=0.17.2",
+]
