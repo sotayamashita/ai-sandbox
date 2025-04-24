@@ -23,7 +23,7 @@ The script in this experiment:
 
 1. Create and activate virtual environment:
 ```bash
-uv venv .venv
+uv venv
 source .venv/bin/activate.fish
 ```
 
