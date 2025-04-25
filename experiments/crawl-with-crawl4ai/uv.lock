@@ -241,12 +241,14 @@ name = "crawl-with-crawl4ai"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "click" },
     { name = "crawl4ai" },
     { name = "pytest-playwright" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "click", specifier = ">=8.1.8" },
     { name = "crawl4ai", specifier = ">=0.5.0.post8" },
     { name = "pytest-playwright", specifier = ">=0.7.0" },
 ]

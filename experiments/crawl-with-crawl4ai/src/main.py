@@ -1,69 +1,54 @@
-"""Crawls a website and saves its content as markdown files."""
+"""Crawls a website and saves its pages as Markdown files (logging-only)."""
+
+from __future__ import annotations
 
 import asyncio
-import pathlib
-from typing import List, Tuple
+from datetime import datetime
+from pathlib import Path
+from urllib.parse import urlparse
 
-from crawl4ai import (
-    AsyncWebCrawler,
-    CacheMode,
-    CrawlerRunConfig,
-    MemoryAdaptiveDispatcher,
-    RateLimiter,
-)
-from crawl4ai.content_scraping_strategy import LXMLWebScrapingStrategy
-from crawl4ai.deep_crawling import BFSDeepCrawlStrategy
-
-START_URL = "https://docs.crawl4ai.com/"
-OUT_DIR = pathlib.Path("tmp")
-OUT_DIR.mkdir(exist_ok=True)
+import click
+from crawler import Crawler
 
 
-async def main() -> None:
-    """Crawls the specified website and saves each page as a markdown file."""
-    run_cfg = CrawlerRunConfig(
-        deep_crawl_strategy=BFSDeepCrawlStrategy(
-            max_depth=2, include_external=False  # Entry point + 2 levels
-        ),
-        scraping_strategy=LXMLWebScrapingStrategy(),
-        check_robots_txt=True,
-        page_timeout=45_000,
-        cache_mode=CacheMode.ENABLED,
-        verbose=True,
-    )
+def _timestamped_dir(start_url: str) -> Path:
+    domain = urlparse(start_url).netloc
+    stamp = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
+    return Path(f"./tmp/{domain}/{stamp}")
 
-    dispatcher = MemoryAdaptiveDispatcher(
-        rate_limiter=RateLimiter(
-            base_delay=(1.0, 2.0),  # Initial wait 1-2 seconds
-            max_delay=30.0,
-            max_retries=2,  # Automatic retry 2 times
-        )
-    )
 
-    failed: List[Tuple[str, str]] = []
-    total_ok = 0
+async def _main(start_url: str):
+    results = await Crawler(start_url).run()
+    out_dir = _timestamped_dir(start_url)
 
-    async with AsyncWebCrawler() as crawler:
-        # Important: first await and then receive
-        results = await crawler.arun(START_URL, config=run_cfg, dispatcher=dispatcher)
+    success = 0
+    failed: list[tuple[str, str]] = []
 
-    # `results` is List[CrawlResult] (all deep crawled pages)
-    for result in results:
-        if result.success:
-            total_ok += 1
-            filename = OUT_DIR / f"{result.url.split('//')[1].replace('/', '_')}.md"
-            filename.write_text(result.markdown or "")
+    # Save
+    for _, res in enumerate(results, 1):
+        if res.success:
+            success += 1
+            filename = out_dir / f"{res.url.split('//')[1].replace('/', '_')}.md"
+            filename.parent.mkdir(parents=True, exist_ok=True)
+            filename.write_text(res.markdown or "")
         else:
-            failed.append((result.url, result.error_message))
+            failed.append((res.url, res.error_message or "unknown error"))
 
-    # Summary
-    print(f"✅ Success: {total_ok} pages")
-    print(f"❌ Failed: {len(failed)} pages")
+    # Report summary
+    print(f"Success: {success} pages")
+    print(f"Failed : {len(failed)} pages")
+
     if failed:
         print("\n--- Skipped URLs List ---")
         for url, msg in failed:
             print(f"{url}\t{msg}")
 
 
+@click.command()
+@click.option("--start-url", default="https://docs.crawl4ai.com/")
+def main(start_url: str) -> None:
+    asyncio.run(_main(start_url))
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
