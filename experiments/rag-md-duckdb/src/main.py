@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import duckdb
 import numpy as np
@@ -119,11 +119,11 @@ def load_embedding_model() -> HuggingFaceEmbeddings:
     )
 
 
-def build_index(model: HuggingFaceEmbeddings) -> List[tuple[int, str, np.ndarray]]:
+def build_index(model: HuggingFaceEmbeddings) -> List[Tuple[int, str, np.ndarray]]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CONFIG.chunk_size, chunk_overlap=CONFIG.chunk_overlap
     )
-    rows: List[tuple[int, str, np.ndarray]] = []
+    rows: List[Tuple[int, str, np.ndarray]] = []
     uid = 0
 
     # Get a list of markdown files
@@ -191,7 +191,6 @@ def main() -> None:
 
         # Semantic Search
         def semantic_search(query: str) -> None:
-            console.print("[cyan]Searching…[/cyan]")
             query_vector = embedding_model.embed_query(query)
             query_vector_np = np.array(query_vector, dtype=np.float32)
             results = db_con.execute(
@@ -216,14 +215,13 @@ def main() -> None:
                     )
 
         # Retrive context
-        def retrieve_context(query: str) -> List[str]:
-            console.print("[cyan]Searching…[/cyan]")
+        def retrieve_context(query: str) -> List[Tuple[int, str]]:
             query_vector = embedding_model.embed_query(query)
             query_vector_np = np.array(query_vector, dtype=np.float32)
 
             results = db_con.execute(
                 f"""
-                SELECT text, list_cosine_similarity(embedding, ?) AS sim
+                SELECT id, text, list_cosine_similarity(embedding, ?) AS sim
                 FROM {CONFIG.db_table_name}
                 ORDER BY sim DESC
                 LIMIT {CONFIG.top_k};
@@ -231,15 +229,19 @@ def main() -> None:
                 (query_vector_np,),
             ).fetchall()
 
-            return [row[0] for row in results]
+            return [(row[0], row[1]) for row in results]
 
         def generate_answer_with_rag(query: str) -> str:
-            context_list = retrieve_context(query)
+            context_list_with_ids = retrieve_context(query)
 
-            if not context_list:
+            if not context_list_with_ids:
                 return "[yellow]No relevant information found.[/yellow]"
 
-            context_str_val = "\n\n".join(context_list)
+            context_parts = []
+            for db_id, text in context_list_with_ids:
+                context_parts.append(f"[source: {db_id}]\n{text}")
+
+            context_str_val = "\n\n".join(context_parts)
             query_val = query
             output_language_val = CONFIG.llm_output_language
 

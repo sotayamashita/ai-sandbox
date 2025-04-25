@@ -13,6 +13,7 @@ A simple Retrieval-Augmented Generation (RAG) system that processes markdown doc
 - ⚡ **Hardware Acceleration** - Utilizes MPS acceleration on Apple Silicon when available
 - 🔄 **Interactive Query Interface** - Command-line REPL for querying the knowledge base
 - 🧩 **Smart Document Chunking** - Splits documents into overlapping chunks for better context preservation
+- 📝 **Source Attribution** - Includes document IDs with retrieved context for transparent source tracking
 
 ## System Architecture
 
@@ -68,8 +69,9 @@ This diagram shows how:
 2. User questions are also embedded to find relevant matches
 3. The HNSW (Hierarchical Navigable Small World) index enables efficient similarity search
 4. Retrieved context is combined with the question in a prompt template
-5. The LLM (Gemini-1.5-Flash) generates a response based on the prompt
-6. The parser extracts the final answer from the LLM response
+5. Source IDs are included with each retrieved document for attribution
+6. The LLM (Gemini-1.5-Flash) generates a response based on the prompt with source context
+7. The parser extracts the final answer from the LLM response
 
 ## Setup
 
@@ -181,6 +183,7 @@ RAG Processing Stages
     - `list_cosine_similarity`: Efficient vector comparison
     - Configurable top-k retrieval (default: top 3 results)
     - Results ranked by similarity score
+    - Document IDs included for source attribution
 
 ### 3. Generation
 
@@ -191,6 +194,7 @@ RAG Processing Stages
   - Function: Generates contextual answers based on retrieved documents
   - Features:
     - Template-based prompting with context integration
+    - Source attribution with document IDs for traceability
     - Multilingual output support (configurable output language)
     - Error handling for LLM generation
 
@@ -226,6 +230,11 @@ See [`src/main.py` -> `class Config`](./src/main.py)
   - For large document collections, consider increasing batch sizes for database insertion
   - Enable hardware acceleration (GPU/MPS) by ensuring PyTorch is properly installed
   - Adjust chunk size and overlap based on your specific content and query patterns
+
+- **Does the system support source attribution?**
+  - Yes, retrieved context includes document IDs that are passed to the LLM
+  - Source IDs are included in the prompt to enable citation in responses
+  - This helps track which documents contributed to the answer
 
 ## References
 
