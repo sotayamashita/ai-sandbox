@@ -14,6 +14,63 @@ A simple Retrieval-Augmented Generation (RAG) system that processes markdown doc
 - 🔄 **Interactive Query Interface** - Command-line REPL for querying the knowledge base
 - 🧩 **Smart Document Chunking** - Splits documents into overlapping chunks for better context preservation
 
+## System Architecture
+
+The following diagram illustrates the RAG (Retrieval-Augmented Generation) architecture implemented in this project:
+
+```mermaid
+flowchart LR
+    %% Input and Question Path
+    Question([Question]) -->|Embedding| Vectorstore[(Vectorstore)]
+    Documents[Documents] -->|Embedding| Vectorstore
+
+    %% HNSW Visualization
+    subgraph HNSW["HNSW Vector Index"]
+        direction LR
+        node1((o)) --- node2((o))
+        node3((o)) --- node1
+        node4((o)) --- node3
+        node2 --- node5((o))
+    end
+
+    Vectorstore --> HNSW
+
+    %% RAG Flow
+    subgraph rag_pipeline["RAG Pipeline"]
+        direction LR
+
+        %% Dictionary and Prompt Template
+        dict_box[("Context+Query Dictionary")] --> prompt_template["Prompt Template"]
+
+        %% LLM
+        prompt_template --> llm_model[["LLM (Gemini-1.5-Flash)"]]
+        llm_model -->|Response| Answer([Answer])
+    end
+
+    %% Connect Query to Dictionary
+    Question -->|Question Value| dict_box
+    Vectorstore -->|Top-k Results| dict_box
+
+    %% Styling
+    classDef storageClass fill:#f9d6d2,stroke:#d86c5c,stroke-width:2px
+    classDef modelClass fill:#d2f9d6,stroke:#5cd86c,stroke-width:2px
+    classDef documentClass fill:#d6d2f9,stroke:#6c5cd8,stroke-width:2px
+    classDef promptClass fill:#f9f9d2,stroke:#d8d86c,stroke-width:2px
+
+    class Vectorstore storageClass
+    class llm_model modelClass
+    class Documents,Answer documentClass
+    class prompt_template promptClass
+```
+
+This diagram shows how:
+1. Documents are processed and embedded into the vector store
+2. User questions are also embedded to find relevant matches
+3. The HNSW (Hierarchical Navigable Small World) index enables efficient similarity search
+4. Retrieved context is combined with the question in a prompt template
+5. The LLM (Gemini-1.5-Flash) generates a response based on the prompt
+6. The parser extracts the final answer from the LLM response
+
 ## Setup
 
 ### Prepare markdown
