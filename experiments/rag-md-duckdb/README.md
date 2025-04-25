@@ -4,14 +4,15 @@ A simple Retrieval-Augmented Generation (RAG) system that processes markdown doc
 
 ## Features
 
-- 📚 **Markdown Processing** - Automatically loads and processes Markdown files from an input directory
+- 📚 **Markdown Processing** - Processes Markdown files from an input directory using UnstructuredMarkdownLoader
 - 🔍 **Semantic Search** - Performs similarity search using vector embeddings to find relevant content
-- 🗄️ **DuckDB Integration** - Uses DuckDB with VSS extension for efficient vector storage and retrieval
-- 🤖 **Multilingual Support** - Powered by multilingual embedding models for cross-language search
-- 📊 **Progress Visualization** - Shows real-time progress with tqdm during indexing and processing
-- ⚡ **Hardware Acceleration** - Utilizes GPU/MPS acceleration when available for faster embeddings
-- 🔄 **Interactive REPL** - Simple command-line interface for querying the knowledge base
-- 🧩 **Chunk Management** - Intelligently splits documents into overlapping chunks for better context
+- 🗄️ **DuckDB with VSS Extension** - Uses DuckDB with vector similarity search extension for efficient vector storage and retrieval
+- 🤖 **LLM Integration** - Generates answers using Google's Gemini models with LangChain integration
+- 🧠 **Multilingual Embeddings** - Uses multilingual embedding models for cross-language understanding
+- 📊 **Real-time Progress Tracking** - Shows progress with tqdm during indexing and processing
+- ⚡ **Hardware Acceleration** - Utilizes MPS acceleration on Apple Silicon when available
+- 🔄 **Interactive Query Interface** - Command-line REPL for querying the knowledge base
+- 🧩 **Smart Document Chunking** - Splits documents into overlapping chunks for better context preservation
 
 ## Setup
 
@@ -71,67 +72,67 @@ RAG Processing Stages
 
 - 📚 **LangChain - UnstructuredMarkdownLoader**
   - Function: Loads and parses Markdown files from input directory
-  - Features: Supports various Markdown formats while preserving metadata
+  - Features: Processes Markdown documents while preserving structure
 
 #### 1.2. Split Documents
 
 - 🧩 **LangChain - RecursiveCharacterTextSplitter**
-  - Function: Splits long texts into chunks with overlap
-  - Features: Maintains context through adjustable chunk size and overlap settings
-  - Alternative: [`spaCy`](https://spacy.io/)
+  - Function: Splits documents into chunks with configurable size and overlap
+  - Features: Maintains context through overlapping chunks (default: 1000 chars with 200 char overlap)
 
 #### 1.3. Embedding
 
 - 🧠 **HuggingFace Embeddings**
   - Model: [`intfloat/multilingual-e5-large-instruct`](https://huggingface.co/intfloat/multilingual-e5-large-instruct)
-  - Function: Generates high-quality 1024-dimensional embeddings with multilingual support
-  - Benchmark: [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)
-- 🚀 **PyTorch**
-  - Function: Provides hardware acceleration (GPU/MPS) for embedding model operations
-  - Features: Automatically leverages Apple Silicon MPS acceleration when available
+  - Function: Generates 1024-dimensional embeddings with multilingual support
+  - Features: Normalized embeddings for better similarity search
+- 🚀 **PyTorch with MPS Acceleration**
+  - Function: Automatically detects and uses Apple Silicon MPS acceleration when available
+  - Features: Falls back to CPU when MPS is not available
 
 #### 1.4. Store Documents
 
 - 📊 **DuckDB with VSS Extension**
-  - Function: Lightweight, zero-configuration analytical database for vector storage and search
+  - Function: Lightweight, embedded analytical database for vector storage and search
   - Features:
-    - `hnsw` indexing: Fast approximate nearest neighbor search for embeddings
-    - `list_cosine_similarity`: Efficient similarity calculations between vectors
-  - Alternative: [Chroma](https://github.com/chroma-core/chroma), [Weaviate](https://github.com/weaviate/weaviate)
+    - `hnsw` indexing: Fast approximate nearest neighbor search
+    - Persistent index for faster subsequent queries
+    - Batched insertion for better performance
+    - SQL-based vector similarity search
 
-  | Feature                         | **DuckDB + VSS Extension**                                                  | **Weaviate**                                                              | **Faiss**                                                     |
-  | :------------------------------ | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------ | :------------------------------------------------------------ |
-  | **Overall**                     | Lightweight all-in-one SQL + vector option for local analytics or batch RAG | Fully-featured vector DB with hybrid search & production features         | Fast, flexible library for custom similarity-search pipelines |
-  | **Vector Storage**              | Yes — embeddings stored in `ARRAY` / `LIST` columns inside ordinary tables | Yes — objects and their vectors are stored together                      | Yes (vectors only) — no metadata storage                    |
-  | **Document Storage**            | Yes — any SQL table can hold full documents & metadata                     | Yes — object schema includes properties + vector                         | No — keep docs/metadata in an external store                |
-  | **Vector indexing**             | HNSW via `CREATE INDEX … USING vss_hnsw`                                   | Built-in Flat, HNSW, dynamic index                                        | Many: HNSW, IVF-PQ, Flat, OPQ, etc.                           |
-  | **Similarity search**           | k-NN with cosine, L2, etc. via SQL (`ORDER BY distance`)                    | Vector k-NN and hybrid BM25 + vector                                      | Core API for k-NN with multiple distance metrics              |
-  | **Filtering**                   | Standard SQL `WHERE`, joins, window functions                               | Rich boolean & range filters on metadata                                  | Limited — usually filter results externally                  |
-  | **Scalability**                 | Scales with host resources; embeddable in any process                       | Cloud-native, horizontal sharding, multi-tenancy                          | Scales as a library you embed; cluster logic is up to you     |
-  | **Configuration**               | Zero-config: single shared-library or Python package                        | Runs as a service (Docker/K8s, managed cloud)                             | Linked/installed as a library in application code             |
-  | **Persistence**                 | Yes — single DuckDB file or MotherDuck cloud                               | Yes — durable storage back-ends (Badger, RocksDB, etc.)                  | Manual — call `faiss.write_index` / `read_index`            |
-
-### 2. Retrival
+### 2. Retrieval
 
 #### 2.1. Semantic Search
 
 - 🔍 **Vector Similarity Search with DuckDB**
-  - Function: Calculates similarity between query vectors and stored document vectors
+  - Function: Finds semantically similar documents using cosine similarity
   - Features:
-    - `list_cosine_similarity`: Efficient similarity calculations between vectors
-    - k-nearest neighbor search for retrieving relevant documents
-    - Ranking functionality based on similarity scores
+    - `list_cosine_similarity`: Efficient vector comparison
+    - Configurable top-k retrieval (default: top 3 results)
+    - Results ranked by similarity score
+
+### 3. Generation
+
+#### 3.1 Generate output
+
+- 🤖 **LangChain with Google Generative AI**
+  - Model: `gemini-1.5-flash` (configurable)
+  - Function: Generates contextual answers based on retrieved documents
+  - Features:
+    - Template-based prompting with context integration
+    - Multilingual output support (configurable output language)
+    - Error handling for LLM generation
 
 #### System Integration & User Interface
 
-- 🔄 **LangChain**
-  - Function: Orchestrates the entire RAG pipeline components
-- 📈 **tqdm**
-  - Function: Shows progress bars for long-running operations like file processing and embedding generation
-  - Features: Improves user experience during indexing and database operations
-- 🎨 **Rich**
-  - Function: Enhances terminal output with colors and formatting
-  - Features: Makes logs and search results more readable and user-friendly
+- 🔄 **Application Architecture**
+  - Function: Combines document processing, vector storage, and LLM generation in a cohesive pipeline
+- 📈 **Progress Visualization**
+  - Function: Uses tqdm for visualizing progress during document processing and embedding
+- 🎨 **Rich Console Output**
+  - Function: Enhances terminal output with colors and formatting for better readability
+- 🔐 **Environment Configuration**
+  - Function: Uses dotenv for secure API key management
 
 ## Configuration
 

@@ -1,0 +1,11 @@
+You are an assistant that answers user questions based on the provided context information. The context information is as follows.
+
+<CONTEXT>
+{context_str}
+</CONTEXT>
+
+Based on the context information above, please answer the following question in {output_language}. Do not include any information unrelated to the context.
+
+Question: {query}
+
+Answer:
