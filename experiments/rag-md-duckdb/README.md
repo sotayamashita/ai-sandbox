@@ -113,7 +113,7 @@ RAG Processing Stages
 
 ### 3. Generation
 
-#### 3.1 Generate output
+#### 3.1 Generate contextual answers
 
 - 🤖 **LangChain with Google Generative AI**
   - Model: `gemini-1.5-flash` (configurable)
