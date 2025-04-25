@@ -20,6 +20,10 @@ class Config:
     embedding_model_name: str = "intfloat/multilingual-e5-large-instruct"
     embedding_vector_dim: int = 1024
     input_dir: Path = Path("./input")
+    chunk_size: int = 1000
+    chunk_overlap: int = 200
+    batch_size: int = 100
+    top_k: int = 3
 
 
 CONFIG = Config()
@@ -94,7 +98,9 @@ def load_embedding_model() -> HuggingFaceEmbeddings:
 
 
 def build_index(model: HuggingFaceEmbeddings) -> List[tuple[int, str, np.ndarray]]:
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=CONFIG.chunk_size, chunk_overlap=CONFIG.chunk_overlap
+    )
     rows: List[tuple[int, str, np.ndarray]] = []
     uid = 0
 
@@ -141,7 +147,7 @@ def main() -> None:
 
             # Show progress bar for database insertion
             console.print("[cyan]Inserting into database…[/cyan]")
-            batch_size = 100  # Specify batch size
+            batch_size = CONFIG.batch_size  # Specify batch size
             for i in tqdm(
                 range(0, len(rows), batch_size), desc="Inserting into database"
             ):
@@ -153,8 +159,8 @@ def main() -> None:
 
             console.print(f"[green]Indexed {len(rows)} chunks.[/green]")
 
-        # Search
-        def search(query: str) -> None:
+        # Semantic Search
+        def semantic_search(query: str) -> None:
             console.print("[cyan]Searching…[/cyan]")
             query_vector = embedding_model.embed_query(query)
             query_vector_np = np.array(query_vector, dtype=np.float32)
@@ -163,7 +169,7 @@ def main() -> None:
                 SELECT id, text, list_cosine_similarity(embedding, ?) AS sim
                 FROM {CONFIG.db_table_name}
                 ORDER BY sim DESC
-                LIMIT 3;
+                LIMIT {CONFIG.top_k};
                 """,
                 (query_vector_np,),
             ).fetchall()
@@ -188,7 +194,7 @@ def main() -> None:
             if not query:
                 break
 
-            search(query)
+            semantic_search(query)
 
     finally:
         if db_con:
