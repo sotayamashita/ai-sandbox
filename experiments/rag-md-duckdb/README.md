@@ -119,6 +119,7 @@ See: `main.py class Config:`
 
 ## References
 
+- [labdmitriy/llm-rag](https://github.com/labdmitriy/llm-rag)
 - [DuckDB Documentation](https://duckdb.org/docs/)
 - [DuckDB VSS Extension](https://github.com/duckdb/duckdb_vss)
 - [HuggingFace E5 Models](https://huggingface.co/intfloat/multilingual-e5-large-instruct)
