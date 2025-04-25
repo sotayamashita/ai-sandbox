@@ -62,7 +62,7 @@ function main() {
   echo ""
   echo "cd ${NEW_EXPERIMENT_DIR}"
   echo "uv init"
-  echo "uv venv .venv"
+  echo "uv venv"
   echo "source .venv/bin/activate.fish"
   echo "uv sync"
   echo ""
