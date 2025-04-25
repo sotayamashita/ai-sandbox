@@ -99,6 +99,7 @@ RAG Processing Stages
     - Persistent index for faster subsequent queries
     - Batched insertion for better performance
     - SQL-based vector similarity search
+  - Alternatives: [Chroma](https://github.com/chroma-core/chroma), [Weaviate](https://github.com/weaviate/weaviate), [Faiss](https://github.com/facebookresearch/faiss)
 
 | Feature | **DuckDB + VSS Extension** | **Weaviate** | **Faiss** |
 | --- | --- | --- | --- |
