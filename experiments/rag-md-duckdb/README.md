@@ -100,6 +100,19 @@ RAG Processing Stages
     - Batched insertion for better performance
     - SQL-based vector similarity search
 
+| Feature | **DuckDB + VSS Extension** | **Weaviate** | **Faiss** |
+| --- | --- | --- | --- |
+| **Overall** | Lightweight all-in-one SQL + vector option for local analytics or batch RAG | Fully-featured vector DB with hybrid search & production features | Fast, flexible library for custom similarity-search pipelines |
+| **Primary role** | Embedded SQL database with vector search | Stand-alone vector database service | Vector search library |
+| **Vector storage** | Yes — embeddings stored in `ARRAY` / `LIST` columns inside ordinary tables | Yes — objects and their vectors are stored together | Yes (vectors only) — no metadata storage |
+| **Document / metadata storage** | Yes — any SQL table can hold full documents & metadata | Yes — object schema includes properties + vector | No — keep docs/metadata in an external store |
+| **Vector indexing** | HNSW via `CREATE INDEX … USING vss_hnsw` | Built-in Flat, HNSW, dynamic index | Many: HNSW, IVF-PQ, Flat, OPQ, etc. |
+| **Similarity search** | k-NN with cosine, L2, etc. via SQL (`ORDER BY distance`) | Vector k-NN and hybrid BM25 + vector | Core API for k-NN with multiple distance metrics |
+| **Filtering** | Standard SQL `WHERE`, joins, window functions | Rich boolean & range filters on metadata | Limited — usually filter results externally |
+| **Scalability** | Scales with host resources; embeddable in any process | Cloud-native, horizontal sharding, multi-tenancy | Scales as a library you embed; cluster logic is up to you |
+| **Configuration / deployment** | Zero-config: single shared-library or Python package | Runs as a service (Docker/K8s, managed cloud) | Linked/installed as a library in application code |
+| **Persistence** | Yes — single DuckDB file or MotherDuck cloud | Yes — durable storage back-ends (Badger, RocksDB, etc.) | Manual — call `faiss.write_index` / `read_index` |
+
 ### 2. Retrieval
 
 #### 2.1. Semantic Search
