@@ -138,7 +138,7 @@ RAG Processing Stages
 - 🧩 **LangChain - RecursiveCharacterTextSplitter**
   - Function: Splits documents into chunks with configurable size and overlap
   - Features: Maintains context through overlapping chunks (default: 1000 chars with 200 char overlap)
-  - Altanatives: [spaCy](https://spacy.io/)
+  - Altanatives: [spaCy](https://spacy.io/), [advanced-chunker](https://github.com/rango-ramesh/advanced-chunker)
 
 #### 1.3. Embedding
 
