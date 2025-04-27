@@ -238,9 +238,19 @@ See [`src/main.py` -> `class Config`](./src/main.py)
 
 ## References
 
+Overview:
+
 - [labdmitriy/llm-rag](https://github.com/labdmitriy/llm-rag)
+
+Tech Stacks
+
 - [DuckDB Documentation](https://duckdb.org/docs/)
 - [DuckDB VSS Extension](https://github.com/duckdb/duckdb_vss)
 - [HuggingFace E5 Models](https://huggingface.co/intfloat/multilingual-e5-large-instruct)
 - [LangChain Documentation](https://python.langchain.com/docs/get_started/introduction)
 - [tqdm Progress Bar](https://github.com/tqdm/tqdm)
+
+private chat history for future...:
+
+- [RAG改善最新研究](https://chatgpt.com/c/680ba05a-8418-8009-86c4-8f6926e2e460)
+- [DuckDBの日本語検索機能の説明](https://gemini.google.com/app/4b4da0802afa1a55)
