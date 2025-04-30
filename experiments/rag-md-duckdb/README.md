@@ -242,6 +242,7 @@ See [`src/main.py` -> `class Config`](./src/main.py)
 Overview:
 
 - [labdmitriy/llm-rag](https://github.com/labdmitriy/llm-rag)
+- [Retrieval-Augmented Generation (RAG)](https://comfyai.app/article/llm-applications/retrieval-augmented-generation)
 
 Tech Stacks
 
