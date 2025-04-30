@@ -237,6 +237,10 @@ See [`src/main.py` -> `class Config`](./src/main.py)
   - Source IDs are included in the prompt to enable citation in responses
   - This helps track which documents contributed to the answer
 
+## Related
+
+- [advanced-rag-vision-cohere](../advanced-rag-vision-cohere/)
+
 ## References
 
 Overview:
