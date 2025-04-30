@@ -59,36 +59,33 @@ This diagram shows how:
 
 - See: [pdf2image](https://pypi.org/project/pdf2image/)
 
-2. Create an input directory:
-
-```bash
-mkdir -p data/input
-```
-
-3. Create `.env`
+2. Create `.env`
 
 ```
 cp .env.example .env
 ```
 
-4. Create and activate virtual environment:
+3. Create and activate virtual environment:
 
 ```bash
 uv venv
 source .venv/bin/activate.fish
 ```
 
-5. Install dependencies:
+4. Install dependencies:
 
 ```bash
 uv sync
 ```
 
-6. Run the application:
+5. Run the application:
 
 ```bash
 python src/main.py <path-to-pdf>
 ```
+
+Input data example:
+- [CyberAgent 1Q FY2025 Report in Japanese](https://pdf.cyberagent.co.jp/C4751/uVIG/maQs/VIjr.pdf)
 
 The system will:
 1. Convert the PDF to images
