@@ -5,11 +5,11 @@ A Retrieval-Augmented Generation (RAG) system that processes PDF documents and t
 ## Features
 
 - 📄 **PDF Processing** - Converts PDF documents to images for visual content analysis
-- 🖼️ **Image Embedding** - Converts images into vector representations for similarity search
-- 🔍 **Visual Semantic Search** - Finds the most relevant image for a given query
+- 🖼️ **Image Embedding** - Converts images into vector representations for similarity search using Cohere's embed-v4.0 model
+- 🔍 **Visual Semantic Search** - Finds the most relevant image for a given query using Gemini
 - 🤖 **LLM Integration** - Generates answers based on the query and relevant visual content
 - 📊 **Vector Database** - Stores and retrieves image embeddings efficiently
-- 🔄 **Query Rewriting** - Clarifies and improves user queries for better retrieval
+- 🔄 **Query Rewriting** - Clarifies and improves user queries for better retrieval using Gemini
 - 📺 **Image Display** - Shows the most relevant image for each query
 - 💾 **Persistent Embeddings** - Saves embeddings to avoid reprocessing documents
 
@@ -140,10 +140,10 @@ The application uses the following default configuration:
 The system consists of the following key modules:
 
 - `knowledge_document`: Handles PDF-to-image conversion
-- `embedding_model`: Creates vector representations of images and queries
+- `embedding_model`: Creates vector representations of images and queries using Cohere's embed-v4.0 model
 - `vector_database`: Manages storage and retrieval of embeddings
-- `query_rewriting`: Improves queries for better retrieval
-- `query_retrieval`: Handles display of relevant images
+- `query_rewriting`: Improves queries for better retrieval using Gemini
+- `query_retrieval`: Handles display of relevant images, powered by Gemini for search
 - `answer_generation`: Generates answers using LLM
 
 ## Future Improvements
@@ -160,6 +160,5 @@ The system consists of the following key modules:
 
 ## References
 
-- [Vision-Language Models](https://arxiv.org/abs/2101.00529)
-- [Multimodal RAG Systems](https://www.pinecone.io/learn/multimodal-rag/)
-- [PDF Processing Libraries](https://pdf.wondershare.com/pdf-knowledge/best-python-libraries-for-pdf.html)
+- [Vision-RAG - Cohere Embed v4 🤝 Gemini Flash](https://colab.research.google.com/drive/1RdkYOTpx41WNLCA8BJoh3egQRMX8fpJZ?usp=sharing)
+- [Cohere Embed v2](https://docs.cohere.com/reference/embed)
