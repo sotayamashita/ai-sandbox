@@ -65,20 +65,26 @@ This diagram shows how:
 mkdir -p data/input
 ```
 
-3. Create and activate virtual environment:
+3. Create `.env`
+
+```
+cp .env.example .env
+```
+
+4. Create and activate virtual environment:
 
 ```bash
 uv venv
 source .venv/bin/activate.fish
 ```
 
-4. Install dependencies:
+5. Install dependencies:
 
 ```bash
 uv sync
 ```
 
-4. Run the application:
+6. Run the application:
 
 ```bash
 python src/main.py <path-to-pdf>
