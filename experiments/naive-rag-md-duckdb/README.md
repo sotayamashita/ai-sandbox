@@ -1,4 +1,4 @@
-# Markdown DuckDB RAG
+# Naive RAG for markdown with DuckDB
 
 A simple Retrieval-Augmented Generation (RAG) system that processes markdown documents using DuckDB for vector storage and retrieval.
 
